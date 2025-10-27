@@ -5,7 +5,6 @@ import time
 import logging
 import requests
 import traceback
-from config import CONFIG
 from functools import wraps
 from selenium import webdriver
 from selenium.webdriver.common.by import By
