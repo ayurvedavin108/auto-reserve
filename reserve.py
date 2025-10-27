@@ -15,10 +15,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 #from selenium.webdriver.common.action_chains import ActionChains
 
-service = Service()
+service = Service(executable_path="/usr/bin/chromedriver")
 options = webdriver.ChromeOptions() 
 options.add_argument('--headless') 
-options.add_argument('--window-size=1440,900')
+options.add_argument('--window-size=1920,1080')
 options.add_argument('--disable-gpu')
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-extensions")
