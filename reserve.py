@@ -147,7 +147,7 @@ def reserve():
     all_orders_element = wait.until(EC.element_to_be_clickable(all_orders))
     #actions.move_to_element(all_orders_element).perform()
     all_orders_element.click()
-    time.sleep(1)   
+    time.sleep(2)   
 
     # Кликаем на "груповые действия"
     menu_group_act = (By.XPATH, "//a[@data-original-title='Групові дії …']")
