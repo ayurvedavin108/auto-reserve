@@ -21,14 +21,15 @@ options.add_argument('--headless')
 options.add_argument('--window-size=1366,764')
 options.add_argument('--disable-gpu')
 options.add_argument("--no-sandbox")
+options.add_argument("--disable-extensions")
 options.add_argument("--disable-dev-shm-usage")
 
 driver = webdriver.Chrome(service=service, options=options)
 wait = WebDriverWait(driver, 10, poll_frequency=1)
 wait_min = WebDriverWait(driver, 2, poll_frequency=0.5)
 
-bot_token = CONFIG['bot_token']
-chat_id = CONFIG['chat_id']
+bot_token = os.getenv('BOT_TOKEN')
+chat_id = os.getenv('CHAT_ID')
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -95,18 +96,20 @@ def timer(func):
 @timer
 def reserve():
 
-    driver.get(CONFIG['URL'])
+    email = os.getenv('EMAIL')
+    password = os.getenv('PASSWORD')
+    driver.get('https://my.ordage.com/')
 
     email = wait.until(EC.element_to_be_clickable((By.NAME, "login")))
-    email.send_keys(CONFIG['email'])
+    email.send_keys(email)
 
     password = wait.until(EC.element_to_be_clickable((By.NAME, "password")))
-    password.send_keys(CONFIG['password'])
+    password.send_keys(password)
 
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn-login"))).click()
     time.sleep(1)
 
-    driver.get(CONFIG['URL_orders'])
+    driver.get(https://my.ordage.com/55f67cd753a10ad5.6167.036bad/orders)
 
     # Клик на выбор склада
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
