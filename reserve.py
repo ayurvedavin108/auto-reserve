@@ -18,7 +18,7 @@ from selenium.webdriver.support import expected_conditions as EC
 service = Service()
 options = webdriver.ChromeOptions() 
 options.add_argument('--headless') 
-options.add_argument('--window-size=1366,764')
+options.add_argument('--window-size=1440,900')
 options.add_argument('--disable-gpu')
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-extensions")
@@ -147,12 +147,12 @@ def reserve():
     all_orders_element = wait.until(EC.element_to_be_clickable(all_orders))
     #actions.move_to_element(all_orders_element).perform()
     all_orders_element.click()
-    time.sleep(3)   
+    time.sleep(10)   
 
     # Кликаем на "груповые действия"
     menu_group_act = (By.XPATH, "//a[@data-original-title='Групові дії …']")
     wait.until(EC.element_to_be_clickable(menu_group_act)).click()
-    time.sleep(1)
+    time.sleep(2)
 
     # Выбрать "Зарезервувати"
     #//a[contains(@class, 'buttons-html5')] //li[text()='Зарезервувати']
