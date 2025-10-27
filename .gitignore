@@ -1,5 +1,12 @@
-# Python
+# Объединенный .gitignore
 __pycache__/
+*.py[cod]
+*.pyc
+env/
+venv/
+.env
+*.env
+# Python
 *.py[cod]
 *$py.class
 *.so
