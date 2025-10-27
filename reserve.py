@@ -108,7 +108,7 @@ def reserve():
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn-login"))).click()
     time.sleep(1)
 
-    driver.get(https://my.ordage.com/55f67cd753a10ad5.6167.036bad/orders)
+    driver.get('https://my.ordage.com/55f67cd753a10ad5.6167.036bad/orders')
 
     # Клик на выбор склада
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
