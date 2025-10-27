@@ -96,15 +96,13 @@ def timer(func):
 @timer
 def reserve():
 
-    email = os.getenv('EMAIL')
-    password = os.getenv('PASSWORD')
     driver.get('https://my.ordage.com/')
 
     email = wait.until(EC.element_to_be_clickable((By.NAME, "login")))
-    email.send_keys(email)
+    email.send_keys(os.getenv('EMAIL'))
 
     password = wait.until(EC.element_to_be_clickable((By.NAME, "password")))
-    password.send_keys(password)
+    password.send_keys(os.getenv('PASSWORD'))
 
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn-login"))).click()
     time.sleep(1)
