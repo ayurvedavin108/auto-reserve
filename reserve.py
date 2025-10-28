@@ -169,7 +169,7 @@ def reserve():
 
     # Выбрать "Зарезервувати"
     #//a[contains(@class, 'buttons-html5')] //li[text()='Зарезервувати']
-    shipping_option_xpath = (By.XPATH, "//li[text()='Зарезервувати']")  
+    shipping_option_xpath = (By.XPATH, "(//span[@class='name'])[6]")  
     shipping_option = wait.until(EC.element_to_be_clickable(shipping_option_xpath))
     shipping_option.click()
     time.sleep(1)
