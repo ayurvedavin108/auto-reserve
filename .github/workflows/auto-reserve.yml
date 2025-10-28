@@ -24,6 +24,14 @@ jobs:
         pip install -r requirements.txt
         pip install webdriver-manager
 
+    - name: Debug environment
+      run: |
+        echo "=== Chrome Version ==="
+        google-chrome-stable --version
+        echo "=== Screen Info ==="
+        xdpyinfo | grep dimensions
+        echo "=== Memory Info ==="
+        free -h
             
     - name: Run reserve script
       env:
@@ -33,3 +41,13 @@ jobs:
         CHAT_ID: ${{ secrets.CHAT_ID }}
       run: |
         python reserve.py
+
+    - name: Upload debug artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-files
+        path: |
+          *.png
+          *.html
+          *.log
