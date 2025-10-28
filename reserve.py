@@ -160,7 +160,7 @@ def reserve():
     all_orders_element = wait.until(EC.element_to_be_clickable(all_orders))
     #actions.move_to_element(all_orders_element).perform()
     all_orders_element.click()
-    time.sleep(10)   
+    time.sleep(2)   
 
     # Кликаем на "груповые действия"
     menu_group_act = (By.XPATH, "//a[@class='btn btn-default buttons-html5 fa fa-check-square-o buttons-group-actions inline']")
@@ -169,7 +169,7 @@ def reserve():
 
     # Выбрать "Зарезервувати"
     #//a[contains(@class, 'buttons-html5')] //li[text()='Зарезервувати']
-    shipping_option_xpath = (By.XPATH, "(//span[@class='name'])[6]")  
+    shipping_option_xpath = (By.XPATH, "//span[text()='RESERVE']")  
     shipping_option = wait.until(EC.element_to_be_clickable(shipping_option_xpath))
     shipping_option.click()
     time.sleep(1)
