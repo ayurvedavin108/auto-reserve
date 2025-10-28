@@ -1,9 +1,9 @@
 name: Auto Reserve
 
 on:
-  #schedule:
-  #  - cron: '*/15 10-19 * * *'
- workflow_dispatch:
+  schedule:
+    - cron: '*/15 10-19 * * *'
+  workflow_dispatch:
 
 jobs:
   reserve:
