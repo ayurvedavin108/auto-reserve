@@ -41,13 +41,4 @@ jobs:
         CHAT_ID: ${{ secrets.CHAT_ID }}
       run: |
         python reserve.py
-
-    - name: Upload debug artifacts
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: debug-files
-        path: |
-          *.png
-          *.html
-          *.log
+  
