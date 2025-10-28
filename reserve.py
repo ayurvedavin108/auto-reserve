@@ -163,7 +163,7 @@ def reserve():
     time.sleep(10)   
 
     # Кликаем на "груповые действия"
-    menu_group_act = (By.XPATH, "//a[@data-original-title='Групові дії …']")
+    menu_group_act = (By.XPATH, "//a[@class='btn btn-default buttons-html5 fa fa-check-square-o buttons-group-actions inline']")
     wait.until(EC.element_to_be_clickable(menu_group_act)).click()
     time.sleep(2)
 
