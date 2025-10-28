@@ -140,7 +140,7 @@ def reserve():
     wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "filter-name"))).click()
 
     # выбираем фильтр "ЗАРЕЗЕРВУВАТИ"
-    filter_check = (By.XPATH, "//span[text()='RESERVE']")
+    filter_check = (By.XPATH, "//span[@class='name' and text()='ЗАРЕЗЕРВУВАТИ']")
     wait.until(EC.element_to_be_clickable(filter_check)).click()
     time.sleep(2)
 
@@ -169,7 +169,7 @@ def reserve():
 
     # Выбрать "Зарезервувати"
     #//a[contains(@class, 'buttons-html5')] //li[text()='Зарезервувати']
-    shipping_option_xpath = (By.XPATH, "//a[contains(@class, 'buttons-html5')] //li[text()='Зарезервувати']")  
+    shipping_option_xpath = (By.XPATH, "//*[@id="datatable-orders_wrapper"]/div[1]/div[1]/a[1]/ul/li[2]")  
     shipping_option = wait.until(EC.element_to_be_clickable(shipping_option_xpath))
     shipping_option.click()
     time.sleep(1)
