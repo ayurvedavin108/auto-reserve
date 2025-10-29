@@ -2,7 +2,7 @@ name: Auto Reserve
 
 on:
   schedule:
-    - cron: '08,23,38,53 10-21 * * *'
+    - cron: '08,18,28,38,48 10-21 * * *'
   workflow_dispatch:
 
 jobs:
