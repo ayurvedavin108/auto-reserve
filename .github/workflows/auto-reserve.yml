@@ -2,12 +2,14 @@ name: Auto Reserve
 
 on:
   schedule:
-    - cron: '08,18,28,38,48 10-21 * * *'
+    - cron: '08,18,28,38,48 5-7 * * *'
+    - cron: '11,26,41,57 7-16 * * *'
   workflow_dispatch:
 
 jobs:
   reserve:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     
     steps:
     - name: Checkout code
