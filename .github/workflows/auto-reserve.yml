@@ -1,10 +1,9 @@
 name: Auto Reserve
 
 on:
-  schedule:
-    - cron: '08,18,28,38,48 6-10 * * *'
-    - cron: '07,17,27,37,47 11-16 * * *'
-  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-reserve]
+  workflow_dispatch: 
 
 jobs:
   reserve:
