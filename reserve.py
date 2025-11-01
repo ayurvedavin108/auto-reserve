@@ -86,7 +86,7 @@ def extract_traceback_only(error_traceback):
 
 def reserve():
 
-    driver.get('https://my.ordage.com1/')
+    driver.get('https://my.ordage.com/')
 
     email = wait.until(EC.element_to_be_clickable((By.NAME, "login")))
     email.send_keys(os.getenv('EMAIL'))
