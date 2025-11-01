@@ -13,7 +13,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-#from selenium.webdriver.common.action_chains import ActionChains
 
 service = Service(executable_path="/usr/bin/chromedriver")
 options = webdriver.ChromeOptions() 
@@ -32,11 +31,6 @@ options.add_argument("--disable-background-timer-throttling")
 options.add_argument("--disable-renderer-backgrounding")
 options.add_argument("--disable-backgrounding-occluded-windows")
     
-    # Для обхода детекта автоматизации
-options.add_experimental_option("excludeSwitches", ["enable-automation"])
-options.add_experimental_option('useAutomationExtension', False)
-options.add_argument("--disable-blink-features=AutomationControlled")
-
 driver = webdriver.Chrome(service=service, options=options)
 wait = WebDriverWait(driver, 10, poll_frequency=1)
 wait_min = WebDriverWait(driver, 2, poll_frequency=0.5)
@@ -90,23 +84,6 @@ def extract_traceback_only(error_traceback):
     return '\n'.join(traceback_lines).strip()
 
 
-def timer(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        logging.info(f"Start")
-        
-        result = func(*args, **kwargs)
-        
-        end_time = time.time()
-        execution_time = end_time - start_time
-        logging.info(f"Finish ({execution_time:.2f} sec)")
-        
-        return result
-    return wrapper
-
-
-@timer
 def reserve():
 
     driver.get('https://my.ordage.com/')
@@ -155,10 +132,8 @@ def reserve():
     #wait.until(EC.element_to_be_clickable((By.XPATH, "//th[@data-key='order_date']"))).click()
 
     # выделяем все заказы на странице
-    #actions = ActionChains(driver)
     all_orders = (By.CSS_SELECTOR, "label.checkbox")
     all_orders_element = wait.until(EC.element_to_be_clickable(all_orders))
-    #actions.move_to_element(all_orders_element).perform()
     all_orders_element.click()
     time.sleep(2)   
 
@@ -192,16 +167,20 @@ def reserve():
             logging.info('Товары успешно зарезервированы')
             print('Товары успешно зарезервированы')
     finally: 
-        driver.quit
+        driver.quit()
     
 
 try:
     reserve() 
+    exit_code = 0  
 except Exception as e: 
     error_traceback = traceback.format_exc()
     clean_traceback = extract_traceback_only(error_traceback)
     message = f"❌ Autoreserve ERROR:\n{clean_traceback}"
-    success = send_telegram_message(bot_token, chat_id, message)  
+    telegram_success = send_telegram_message(bot_token, chat_id, message)  
     logging.warning(e)
     logging.warning(clean_traceback)
-    print(clean_traceback)  
+    print(clean_traceback)
+    exit_code = 1  
+
+sys.exit(exit_code)
