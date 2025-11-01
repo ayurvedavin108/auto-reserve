@@ -64,6 +64,7 @@ def send_telegram_message(bot_token, chat_id, message):
         result = response.json()
         
         #print(f"✅ Ответ от Telegram: {result}")
+        print('✅Сообщение успешно отправлено в Телеграм')
         logging.info('Сообщение успешно отправлено в Телеграм')
         return result
         
