@@ -110,10 +110,11 @@ def reserve():
     slct_warehouse_xpath = (By.XPATH, "//li[text()='Основний склад']")
     slct_warehouse = wait.until(EC.element_to_be_clickable(slct_warehouse_xpath))
     slct_warehouse.click()
-
+    
+    time.sleep(2)
     # ждем пока прогрузится страница
     wait.until(EC.element_to_be_clickable((By.NAME, "datatable-orders_length")))
-
+    
     # меню фильтра
     wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "filter-name"))).click()
 
