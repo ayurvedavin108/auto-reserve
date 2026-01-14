@@ -104,6 +104,7 @@ def reserve():
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
     warehouse = (By.XPATH, "(//div[@class='name'])[2]")
     warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
+    time.sleep(2)
     warehouse_trigger.click()
         
     # Выбор склада
@@ -111,7 +112,7 @@ def reserve():
     slct_warehouse = wait.until(EC.element_to_be_clickable(slct_warehouse_xpath))
     slct_warehouse.click()
     
-    time.sleep(2)
+    time.sleep(4)
     # ждем пока прогрузится страница
     wait.until(EC.element_to_be_clickable((By.NAME, "datatable-orders_length")))
     
