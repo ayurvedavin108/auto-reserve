@@ -1,1 +1,180 @@
 
+import io
+import os
+import re
+import sys
+import time
+import logging
+import requests
+import traceback
+from functools import wraps
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service 
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+service = Service(executable_path="/usr/bin/chromedriver")
+options = webdriver.ChromeOptions() 
+options.add_argument('--headless=new') 
+options.add_argument('--window-size=1920,1080')
+options.add_argument('--disable-gpu')
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-extensions")
+options.add_argument("--disable-dev-shm-usage")
+
+options.add_argument("--disable-notifications")
+options.add_argument("--disable-web-security")
+options.add_argument("--allow-running-insecure-content")
+options.add_argument("--disable-features=VizDisplayCompositor")
+options.add_argument("--disable-background-timer-throttling")
+options.add_argument("--disable-renderer-backgrounding")
+options.add_argument("--disable-backgrounding-occluded-windows")
+    
+driver = webdriver.Chrome(service=service, options=options)
+wait = WebDriverWait(driver, 10, poll_frequency=1)
+wait_min = WebDriverWait(driver, 2, poll_frequency=0.5)
+
+bot_token = os.getenv('BOT_TOKEN')
+chat_id = os.getenv('CHAT_ID')
+
+logging.basicConfig(
+    level=logging.INFO, 
+    filename="reserve_log.txt",
+    filemode="a",
+    format="%(asctime)s %(levelname)s %(message)s",
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+def send_telegram_message(bot_token, chat_id, message):
+    try:
+            
+        # Удаляем все HTML теги
+        text_message = re.sub(r'<[^>]+>', '', message)
+                
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        payload = {
+            'chat_id': chat_id,
+            'text': text_message
+        }
+        
+        response = requests.post(url, json=payload, timeout=30)
+        result = response.json()
+        
+        #print(f"✅ Ответ от Telegram: {result}")
+        print('✅Сообщение успешно отправлено в Телеграм')
+        logging.info('Сообщение успешно отправлено в Телеграм')
+        return result
+        
+    except Exception as e:
+        print(f"❌ Ошибка отправки в Telegram: {e}")
+        logging.warning(f"Ошибка отправки в Telegram: {e}")
+        return {"error": str(e)}
+
+def extract_traceback_only(error_traceback):
+    lines = error_traceback.split('\n')
+    traceback_lines = []
+    
+    for line in lines:
+        if 'Stacktrace:' in line or 'GetHandleVerifier' in line:
+            break
+        traceback_lines.append(line)
+    
+    return '\n'.join(traceback_lines).strip()
+
+
+def ship():
+
+    driver.get('https://my.ordage.com/')
+
+    email = wait.until(EC.element_to_be_clickable((By.NAME, "login")))
+    email.send_keys(os.getenv('EMAIL'))
+
+    password = wait.until(EC.element_to_be_clickable((By.NAME, "password")))
+    password.send_keys(os.getenv('PASSWORD'))
+
+    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn-login"))).click()
+    time.sleep(1)
+
+    driver.get('https://my.ordage.com/55f67cd753a10ad5.6167.036bad/orders')
+
+    # Клик на выбор склада
+    #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
+    warehouse = (By.XPATH, "(//div[@class='name'])[2]")
+    warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
+    warehouse_trigger.click()
+        
+    # Выбор склада
+    slct_warehouse_xpath = (By.XPATH, "//li[text()='Основний склад']")
+    slct_warehouse = wait.until(EC.element_to_be_clickable(slct_warehouse_xpath))
+    slct_warehouse.click()
+    
+    time.sleep(2)
+    # ждем пока прогрузится страница
+    wait.until(EC.element_to_be_clickable((By.NAME, "datatable-orders_length")))
+    
+    # меню фильтра
+    wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "filter-name"))).click()
+
+    # выбираем фильтр "виконано невідвантажено"
+    filter_check = (By.XPATH, "//span[@class='name' and text()='виконано невідвантажено']")
+    wait.until(EC.element_to_be_clickable(filter_check)).click()
+    time.sleep(2)
+
+    # открываем количество заказов
+    wait.until(EC.element_to_be_clickable((By.NAME, "datatable-orders_length"))).click()
+
+    # выбираем 100 
+    wait.until(EC.element_to_be_clickable((By.XPATH, "//option[@value='100']"))).click()
+    time.sleep(3)
+
+    # сортировка по дате
+    wait.until(EC.element_to_be_clickable((By.XPATH, "//th[@data-key='order_date']"))).click()
+
+    # выделяем все заказы на странице
+    all_orders = (By.CSS_SELECTOR, "label.checkbox")
+    all_orders_element = wait.until(EC.element_to_be_clickable(all_orders))
+    all_orders_element.click()
+    time.sleep(2)   
+
+    # Кликаем на "груповые действия"
+    menu_group_act = (By.XPATH, "//a[@class='btn btn-default buttons-html5 fa fa-check-square-o buttons-group-actions inline']")
+    wait.until(EC.element_to_be_clickable(menu_group_act)).click()
+    time.sleep(2)
+
+    # Выбрать "відвантажити"
+    #//a[contains(@class, 'buttons-html5')] //li[text()='Зарезервувати']
+    shipping_option_xpath = (By.XPATH, '//*[@id="datatable-orders_wrapper"]/div[1]/div[1]/a[1]/ul/li[1]')  
+    shipping_option = wait.until(EC.element_to_be_clickable(shipping_option_xpath))
+    shipping_option.click()
+    time.sleep(1)
+
+    try: # проверяем появилось ли окно алерта
+        alert = (By.XPATH,"//div[@class='ui-pnotify-text']")
+        wait_min.until(EC.visibility_of_element_located(alert))
+        logging.info('Немає товарів для відвантаження')
+        print('Немає товарів для відвантаження')
+    except TimeoutException: 
+        driver.find_element(By.XPATH, "(//button[@data-action='add'])[15]").click()
+        logging.info('Товари успішно відвантажено')
+        print('✅Товари успішно відвантажено')
+    finally: 
+        driver.quit()
+    
+try:
+    ship() 
+    exit_code = 0  
+except Exception as e: 
+    error_traceback = traceback.format_exc()
+    clean_traceback = extract_traceback_only(error_traceback)
+    message = f"❌ Autoshiping ERROR:\n{clean_traceback}"
+    telegram_success = send_telegram_message(bot_token, chat_id, message)  
+    logging.warning(e)
+    logging.warning(clean_traceback)
+    print(clean_traceback)
+    exit_code = 1  
+
+sys.exit(exit_code)
