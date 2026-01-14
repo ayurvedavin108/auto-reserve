@@ -150,18 +150,17 @@ def ship():
     shipping_option_xpath = (By.XPATH, '//*[@id="datatable-orders_wrapper"]/div[1]/div[1]/a[1]/ul/li[1]')  
     shipping_option = wait.until(EC.element_to_be_clickable(shipping_option_xpath))
     shipping_option.click()
-    time.sleep(1)
+    time.sleep(4)
 
-    alert_xpath = "//div[contains(@class,'ui-pnotify-text')]"
-    alerts = driver.find_elements(By.XPATH, alert_xpath)
-    
-    if alerts and any(a.is_displayed() for a in alerts):
-        logging.info('Немає товарів для відвантаження')
-        print('Немає товарів для відвантаження')
-    else:
-        driver.find_element(By.XPATH, "(//button[@data-action='add'])[15]").click()
-        logging.info('✅Товари успішно відвантажено')
-        print('✅Товари успішно відвантажено')
+ try: # проверяем появилось ли окно алерта
+        alert = (By.XPATH,"//div[@class='ui-pnotify-text']")
+        wait_min.until(EC.visibility_of_element_located(alert))
+        logging.info('Нет товаров для отгрузки')
+        print('Нет товаров для отгрузки')
+    except TimeoutException: 
+        driver.find_element(By.XPATH, "(//button[@data-action='add'])[14]").click()
+        logging.info('Товары успешно отгружены')
+        print('✅Товары успешно отгружены')
     
 try:
     ship() 
