@@ -152,17 +152,16 @@ def ship():
     shipping_option.click()
     time.sleep(1)
 
-    try: # проверяем появилось ли окно алерта
-        alert = (By.XPATH,"//div[@class='ui-pnotify-text']")
-        wait_min.until(EC.visibility_of_element_located(alert))
+    alert_xpath = "//div[contains(@class,'ui-pnotify-text')]"
+    alerts = driver.find_elements(By.XPATH, alert_xpath)
+    
+    if alerts and any(a.is_displayed() for a in alerts):
         logging.info('Немає товарів для відвантаження')
         print('Немає товарів для відвантаження')
-    except TimeoutException: 
+    else:
         driver.find_element(By.XPATH, "(//button[@data-action='add'])[15]").click()
-        logging.info('Товари успішно відвантажено')
+        logging.info('✅Товари успішно відвантажено')
         print('✅Товари успішно відвантажено')
-    finally: 
-        driver.quit()
     
 try:
     ship() 
@@ -176,5 +175,7 @@ except Exception as e:
     logging.warning(clean_traceback)
     print(clean_traceback)
     exit_code = 1  
+finally: 
+    driver.quit()
 
 sys.exit(exit_code)
