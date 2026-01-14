@@ -152,7 +152,7 @@ def ship():
     shipping_option.click()
     time.sleep(4)
 
- try: # проверяем появилось ли окно алерта
+    try: # проверяем появилось ли окно алерта
         alert = (By.XPATH,"//div[@class='ui-pnotify-text']")
         wait_min.until(EC.visibility_of_element_located(alert))
         logging.info('Нет товаров для отгрузки')
@@ -161,7 +161,7 @@ def ship():
         driver.find_element(By.XPATH, "(//button[@data-action='add'])[14]").click()
         logging.info('Товары успешно отгружены')
         print('✅Товары успешно отгружены')
-    
+
 try:
     ship() 
     exit_code = 0  
