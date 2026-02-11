@@ -152,16 +152,9 @@ def ship():
     shipping_option.click()
     time.sleep(4)
 
-    alert_xpath = "//div[contains(@class,'ui-pnotify-text')]"
-    alerts = driver.find_elements(By.XPATH, alert_xpath)
-    
-    if alerts and any(a.is_displayed() for a in alerts):
-        logging.info('Немає товарів для відвантаження')
-        print('Немає товарів для відвантаження')
-    else:
-        driver.find_element(By.XPATH, "(//button[@data-action='add'])[14]").click()
-        logging.info('✅Товари успішно відвантажено')
-        print('✅Товари успішно відвантажено')
+    driver.find_element(By.XPATH, "(//button[@data-action='add'])[14]").click()
+    logging.info('✅Товари успішно відвантажено')
+    print('✅Товари успішно відвантажено')
 
 try:
     ship() 
