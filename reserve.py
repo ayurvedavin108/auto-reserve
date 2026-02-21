@@ -113,7 +113,7 @@ def reserve():
     slct_warehouse = wait_exctend.until(EC.element_to_be_clickable(slct_warehouse_xpath))
     slct_warehouse.click()
     
-    time.sleep(3)
+    time.sleep(4)
     # ждем пока прогрузится страница
     wait_exctend.until(EC.element_to_be_clickable((By.NAME, "datatable-orders_length")))
     
