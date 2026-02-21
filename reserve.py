@@ -32,8 +32,8 @@ options.add_argument("--disable-renderer-backgrounding")
 options.add_argument("--disable-backgrounding-occluded-windows")
     
 driver = webdriver.Chrome(service=service, options=options)
-wait = WebDriverWait(driver, 10, poll_frequency=0.5)
-wait_exctend = WebDriverWait(driver, 12, poll_frequency=0.5)
+wait = WebDriverWait(driver, 10, poll_frequency=1)
+wait_exctend = WebDriverWait(driver, 12, poll_frequency=1)
 wait_min = WebDriverWait(driver, 2, poll_frequency=0.5)
 
 bot_token = os.getenv('BOT_TOKEN')
