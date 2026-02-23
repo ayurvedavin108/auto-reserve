@@ -33,7 +33,6 @@ options.add_argument("--disable-backgrounding-occluded-windows")
     
 driver = webdriver.Chrome(service=service, options=options)
 wait = WebDriverWait(driver, 10, poll_frequency=1)
-wait_exctend = WebDriverWait(driver, 12, poll_frequency=1)
 wait_min = WebDriverWait(driver, 2, poll_frequency=0.5)
 
 bot_token = os.getenv('BOT_TOKEN')
@@ -110,12 +109,12 @@ def reserve():
         
     # Выбор склада
     slct_warehouse_xpath = (By.XPATH, "//li[text()='Основний склад']")
-    slct_warehouse = wait_exctend.until(EC.element_to_be_clickable(slct_warehouse_xpath))
+    slct_warehouse = wait.until(EC.element_to_be_clickable(slct_warehouse_xpath))
     slct_warehouse.click()
     
     time.sleep(4)
     # ждем пока прогрузится страница
-    wait_exctend.until(EC.element_to_be_clickable((By.NAME, "datatable-orders_length")))
+    wait.until(EC.element_to_be_clickable((By.NAME, "datatable-orders_length")))
     
     # меню фильтра
     wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "filter-name"))).click()
