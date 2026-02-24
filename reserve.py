@@ -161,10 +161,10 @@ def reserve():
         try: # проверяем на красные галочки
            not_enough = (By.XPATH, '//i[contains (@class, "not_enough_btn btn")]')
            wait_min.until(EC.visibility_of_element_located(not_enough))
-           message = f"❌Autoreserve ERROR: Недостатня кількість товару на складі"
+           message = f"⚠️Autoreserve: Недостатня кількість товару на складі!"
            send_telegram_message(bot_token, chat_id, message)
            logging.warning('Недостатня кількість товару на складі')
-           print('❌Недостатня кількість товару на складі')
+           print('⚠️Недостатня кількість товару на складі')
         except TimeoutException: # Нажимаем кнопку зарезервувати 
             driver.find_element(By.XPATH, "(//button[@data-action='add'])[15]").click()
             logging.info('Товары успешно зарезервированы')
