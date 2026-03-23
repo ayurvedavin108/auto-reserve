@@ -98,19 +98,19 @@ def reserve():
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn-login"))).click()
     time.sleep(1)
 
-    driver.get('https://my.ordage.com/55f67cd753a10ad5.6167.036bad/orders')
-    time.sleep(5)
+    driver.get('https://my.ordage.com/36228cde17ea1ed5.6167.036bad/orders')
+    time.sleep(1)
+
     # Клик на выбор склада
     #(//div[@class='name'])[2]
     #//*[@id='warehouseSelectComponent']/div/div/div/div/div[2]/div[2]
     #//label[contains(text(),'Склад')]/following-sibling::div[@class='name'] резервный XPATH
     warehouse = (By.XPATH, "//label[contains(text(),'Склад')]/following-sibling::div[@class='name']")
-    wait.until(EC.presence_of_element_located(warehouse))
-    driver.execute_script("arguments[0].click();", warehouse)
-   
-    #warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
-    #time.sleep(2)
-    #warehouse_trigger.click()
+    #wait.until(EC.presence_of_element_located(warehouse))
+    #driver.execute_script("arguments[0].click();", warehouse)
+    warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
+    time.sleep(2)
+    warehouse_trigger.click()
         
     # Выбор склада
     slct_warehouse_xpath = (By.XPATH, "//li[text()='Основний склад']")
