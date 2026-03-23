@@ -99,11 +99,13 @@ def reserve():
     time.sleep(1)
 
     driver.get('https://my.ordage.com/55f67cd753a10ad5.6167.036bad/orders')
-    time.sleep(5)
+    #time.sleep(5)
     # Клик на выбор склада
     #(//div[@class='name'])[2]
+    #//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
-    warehouse = (By.XPATH, '//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]')
+    warehouse = (By.XPATH, '(//div[@class='name'])[2]'))
+    wait.until(EC.presence_of_element_located(warehouse))
     warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
     time.sleep(2)
     warehouse_trigger.click()
