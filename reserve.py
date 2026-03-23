@@ -103,7 +103,7 @@ def reserve():
     # Клик на выбор склада
     #(//div[@class='name'])[2]
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
-    warehouse = (By.XPATH, "//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]")
+    warehouse = (By.XPATH, '//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]')
     warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
     time.sleep(2)
     warehouse_trigger.click()
