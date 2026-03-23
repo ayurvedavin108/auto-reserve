@@ -99,7 +99,7 @@ def reserve():
     time.sleep(1)
 
     driver.get('https://my.ordage.com/55f67cd753a10ad5.6167.036bad/orders')
-
+    time.sleep(1)
     # Клик на выбор склада
     #(//div[@class='name'])[2]
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
