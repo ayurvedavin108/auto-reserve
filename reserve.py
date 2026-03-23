@@ -105,7 +105,13 @@ def reserve():
     #//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
     warehouse = (By.XPATH, "(//div[@class='name'])[2]")
-    wait.until(EC.presence_of_element_located(warehouse))
+    #wait.until(EC.presence_of_element_located(warehouse))
+    element = wait.until(EC.presence_of_element_located(warehouse))
+    print("Найден элемент, видим:", element.is_displayed())
+    print("Включён (enabled):", element.is_enabled())
+    # Прокрутим к элементу, чтобы он точно попал в область видимости
+    driver.execute_script("arguments[0].scrollIntoView(true);", element)
+    time.sleep(1)
     warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
     time.sleep(2)
     warehouse_trigger.click()
