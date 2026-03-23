@@ -105,7 +105,7 @@ def reserve():
     #(//div[@class='name'])[2]
     #//*[@id='warehouseSelectComponent']/div/div/div/div/div[2]/div[2]
     #//label[contains(text(),'Склад')]/following-sibling::div[@class='name'] резервный XPATH
-    warehouse = (By.XPATH, "//label[contains(text(),'Склад')]/following-sibling::div[@class='name']")
+    warehouse = (//div[@class='name'])[2]
     #wait.until(EC.presence_of_element_located(warehouse))
     #driver.execute_script("arguments[0].click();", warehouse)
     warehouse_trigger = wait.until(EC.element_to_be_clickable(warehouse))
