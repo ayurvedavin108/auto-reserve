@@ -104,7 +104,7 @@ def reserve():
     #(//div[@class='name'])[2]
     #//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
-    warehouse = (By.XPATH, "(//div[@class='name'])[2]")
+    warehouse = (By.XPATH, "//label[contains(text(),'Склад')]/following-sibling::div[@class='name']")
     #wait.until(EC.presence_of_element_located(warehouse))
     element = wait.until(EC.presence_of_element_located(warehouse))
     print("Найден элемент, видим:", element.is_displayed())
