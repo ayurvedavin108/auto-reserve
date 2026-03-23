@@ -102,9 +102,9 @@ def reserve():
     time.sleep(5)
     # Клик на выбор склада
     #(//div[@class='name'])[2]
-    #//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]
+    #//*[@id='warehouseSelectComponent']/div/div/div/div/div[2]/div[2]
     #//label[text()='Склад']/following-sibling::div[@class='name'] резервный XPATH
-    warehouse = (By.XPATH, "//*[@id="warehouseSelectComponent"]/div/div/div/div/div[2]/div[2]")
+    warehouse = (By.XPATH, "//*[@id='warehouseSelectComponent']/div/div/div/div/div[2]/div[2]")
     wait.until(EC.presence_of_element_located(warehouse))
     driver.execute_script("arguments[0].click();", warehouse)
    
