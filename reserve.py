@@ -150,12 +150,23 @@ def reserve():
     wait.until(EC.element_to_be_clickable(menu_group_act)).click()
     time.sleep(2)
 
+    try: # проверяем на красные галочки в списке заказов
+        not_enough_btn = (By.XPATH, '//i[contains (@class, "not_enough_btn")]')
+        wait_min.until(EC.visibility_of_element_located(not_enough_btn))
+        message = f"⚠️Autoreserve: Недостатня кількість товару на складі!"
+        send_telegram_message(bot_token, chat_id, message)
+        logging.warning('Недостатня кількість товару на складі')
+        print('⚠️Недостатня кількість товару на складі')
+    except TimeoutException:
+        pass
+        
     # Выбрать "Зарезервувати"
     #//a[contains(@class, 'buttons-html5')] //li[text()='Зарезервувати']
     shipping_option_xpath = (By.XPATH, '//*[@id="datatable-orders_wrapper"]/div[1]/div[1]/a[1]/ul/li[2]')  
     shipping_option = wait.until(EC.element_to_be_clickable(shipping_option_xpath))
     shipping_option.click()
     time.sleep(1)
+    
 
     try: # проверяем появилось ли окно алерта
         alert = (By.XPATH,"//div[@class='ui-pnotify-text']")
@@ -163,13 +174,13 @@ def reserve():
         logging.info('Нет товаров для резервирования')
         print('Нет товаров для резервирования')
     except TimeoutException: 
-        try: # проверяем на красные галочки
-           not_enough = (By.XPATH, '//i[contains (@class, "not_enough_btn btn")]')
-           wait_min.until(EC.visibility_of_element_located(not_enough))
-           message = f"⚠️Autoreserve: Недостатня кількість товару на складі!"
-           send_telegram_message(bot_token, chat_id, message)
-           logging.warning('Недостатня кількість товару на складі')
-           print('⚠️Недостатня кількість товару на складі')
+        try: # проверяем на красные галочки внутри окна резервирования
+            not_enough = (By.XPATH, '//i[contains (@class, "not_enough_btn btn")]')
+            wait_min.until(EC.visibility_of_element_located(not_enough))
+            message = f"⚠️Autoreserve: Недостатня кількість товару на складі!"
+            send_telegram_message(bot_token, chat_id, message)
+            logging.warning('Недостатня кількість товару на складі')
+            print('⚠️Недостатня кількість товару на складі')
         except TimeoutException: # Нажимаем кнопку зарезервувати 
             driver.find_element(By.XPATH, "(//button[@data-action='add'])[15]").click()
             logging.info('Товары успешно зарезервированы')
